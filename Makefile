@@ -1,48 +1,26 @@
-# Makefile for myshell
-
 CC = gcc
 CFLAGS = -Wall -Wextra -g -Iinclude
-TARGET = myshell
 
-# Source files
-SRCDIR = src
-INCDIR = include
-SOURCES = $(SRCDIR)/main.c $(SRCDIR)/parse.c $(SRCDIR)/execute.c $(SRCDIR)/builtin.c $(SRCDIR)/signals.c $(SRCDIR)/logger.c
+myshell: src/main.o src/parse.o src/execute.o src/builtin.o src/signals.o src/logger.o
+	$(CC) $(CFLAGS) -o myshell src/main.o src/parse.o src/execute.o src/builtin.o src/signals.o src/logger.o
 
-# Object files
-OBJECTS = $(SRCDIR)/main.o $(SRCDIR)/parse.o $(SRCDIR)/execute.o $(SRCDIR)/builtin.o $(SRCDIR)/signals.o $(SRCDIR)/logger.o
+src/main.o: src/main.c include/parse.h include/execute.h include/builtin.h include/signals.h include/logger.h
+	$(CC) $(CFLAGS) -c src/main.c -o src/main.o
 
-# Header files
-HEADERS = $(INCDIR)/parse.h $(INCDIR)/execute.h $(INCDIR)/builtin.h $(INCDIR)/signals.h $(INCDIR)/logger.h
+src/parse.o: src/parse.c include/parse.h
+	$(CC) $(CFLAGS) -c src/parse.c -o src/parse.o
 
-# Default target
-all: $(TARGET)
+src/execute.o: src/execute.c include/execute.h include/logger.h
+	$(CC) $(CFLAGS) -c src/execute.c -o src/execute.o
 
-# Build the executable
-$(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
+src/builtin.o: src/builtin.c include/builtin.h
+	$(CC) $(CFLAGS) -c src/builtin.c -o src/builtin.o
 
-# Compile source files
-$(SRCDIR)/main.o: $(SRCDIR)/main.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $(SRCDIR)/main.c -o $(SRCDIR)/main.o
+src/signals.o: src/signals.c include/signals.h
+	$(CC) $(CFLAGS) -c src/signals.c -o src/signals.o
 
-$(SRCDIR)/parse.o: $(SRCDIR)/parse.c $(INCDIR)/parse.h
-	$(CC) $(CFLAGS) -c $(SRCDIR)/parse.c -o $(SRCDIR)/parse.o
+src/logger.o: src/logger.c include/logger.h
+	$(CC) $(CFLAGS) -c src/logger.c -o src/logger.o
 
-$(SRCDIR)/execute.o: $(SRCDIR)/execute.c $(INCDIR)/execute.h $(INCDIR)/logger.h
-	$(CC) $(CFLAGS) -c $(SRCDIR)/execute.c -o $(SRCDIR)/execute.o
-
-$(SRCDIR)/builtin.o: $(SRCDIR)/builtin.c $(INCDIR)/builtin.h
-	$(CC) $(CFLAGS) -c $(SRCDIR)/builtin.c -o $(SRCDIR)/builtin.o
-
-$(SRCDIR)/signals.o: $(SRCDIR)/signals.c $(INCDIR)/signals.h
-	$(CC) $(CFLAGS) -c $(SRCDIR)/signals.c -o $(SRCDIR)/signals.o
-
-$(SRCDIR)/logger.o: $(SRCDIR)/logger.c $(INCDIR)/logger.h
-	$(CC) $(CFLAGS) -c $(SRCDIR)/logger.c -o $(SRCDIR)/logger.o
-
-# Clean up
 clean:
-	rm -f $(SRCDIR)/*.o $(TARGET) myshell.log
-
-.PHONY: all clean
+	rm -f src/*.o myshell

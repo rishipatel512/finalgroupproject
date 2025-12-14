@@ -1,3 +1,7 @@
 [pid=41697] cmd="ls" status=0
 [pid=41699] cmd="ls -l" status=10
 [pid=41700] cmd="cat myshell.log" status=10
+[pid=41848] cmd="ls" status=0
+[pid=41849] cmd="ls -l" status=10
+[pid=41850] cmd="echo hello" status=10
+[pid=41851] cmd="cat myshell.log" status=10
