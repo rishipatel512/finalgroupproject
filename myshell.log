@@ -1,0 +1,21 @@
+[pid=41432] cmd="cat myshell.log" status=0
+[pid=41434] cmd="ls" status=10
+[pid=41435] cmd="pwd" status=10
+[pid=41436] cmd="ls -l" status=10
+[pid=41437] cmd="cat myshell.log" status=10
+[pid=41440] cmd="echo "test output" > output.txt" status=10
+[pid=41442] cmd="cat output.txt" status=10
+[pid=41443] cmd="echo "more test" >> output.txt" status=10
+[pid=41444] cmd="cat output.txt" status=10
+[pid=41446] cmd="wc -l < output.txt" status=10
+[pid=41450] cmd="ls | grep.c" status=1
+[pid=41452] cmd="ls | grep .c" status=1
+[pid=41454] cmd="clear" status=10
+[pid=41456] cmd="ls | grep .c" status=1
+[pid=41458] cmd="cat myshell.log | wc -l" status=1
+[pid=41460] cmd="ls -l | grep main" status=1
+[pid=41463] cmd="cat output.txt | grep text" status=1
+[pid=41466] cmd="ls" status=0
+[pid=41467] cmd="pwd" status=10
+[pid=41468] cmd="echo test" status=10
+[pid=41472] cmd="inv" status=0
