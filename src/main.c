@@ -5,6 +5,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include "../include/parse.h"
+#include "../include/execute.h"
+#include "../include/builtin.h"
+#include "../include/signals.h"
+#include "../include/logger.h"
 
 // Global variables
 int log_file;

@@ -1,29 +1,48 @@
+# Makefile for myshell
+
 CC = gcc
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -g -Iinclude
+TARGET = myshell
 
-myshell: main.o parse.o execute.o builtin.o signals.o logger.o
-	$(CC) $(CFLAGS) main.o parse.o execute.o builtin.o signals.o logger.o -o myshell
+# Source files
+SRCDIR = src
+INCDIR = include
+SOURCES = $(SRCDIR)/main.c $(SRCDIR)/parse.c $(SRCDIR)/execute.c $(SRCDIR)/builtin.c $(SRCDIR)/signals.c $(SRCDIR)/logger.c
 
-main.o: main.c parse.h execute.h builtin.h signals.h logger.h
-	$(CC) $(CFLAGS) -c main.c
+# Object files
+OBJECTS = $(SRCDIR)/main.o $(SRCDIR)/parse.o $(SRCDIR)/execute.o $(SRCDIR)/builtin.o $(SRCDIR)/signals.o $(SRCDIR)/logger.o
 
-parse.o: parse.c parse.h
-	$(CC) $(CFLAGS) -c parse.c
+# Header files
+HEADERS = $(INCDIR)/parse.h $(INCDIR)/execute.h $(INCDIR)/builtin.h $(INCDIR)/signals.h $(INCDIR)/logger.h
 
-execute.o: execute.c execute.h logger.h
-	$(CC) $(CFLAGS) -c execute.c
+# Default target
+all: $(TARGET)
 
-builtin.o: builtin.c builtin.h
-	$(CC) $(CFLAGS) -c builtin.c
+# Build the executable
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
 
-signals.o: signals.c signals.h
-	$(CC) $(CFLAGS) -c signals.c
+# Compile source files
+$(SRCDIR)/main.o: $(SRCDIR)/main.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $(SRCDIR)/main.c -o $(SRCDIR)/main.o
 
-logger.o: logger.c logger.h
-	$(CC) $(CFLAGS) -c logger.c
+$(SRCDIR)/parse.o: $(SRCDIR)/parse.c $(INCDIR)/parse.h
+	$(CC) $(CFLAGS) -c $(SRCDIR)/parse.c -o $(SRCDIR)/parse.o
 
-%.o:%.c
-	$(CC) $(CFLAGS) -c $<
+$(SRCDIR)/execute.o: $(SRCDIR)/execute.c $(INCDIR)/execute.h $(INCDIR)/logger.h
+	$(CC) $(CFLAGS) -c $(SRCDIR)/execute.c -o $(SRCDIR)/execute.o
 
+$(SRCDIR)/builtin.o: $(SRCDIR)/builtin.c $(INCDIR)/builtin.h
+	$(CC) $(CFLAGS) -c $(SRCDIR)/builtin.c -o $(SRCDIR)/builtin.o
+
+$(SRCDIR)/signals.o: $(SRCDIR)/signals.c $(INCDIR)/signals.h
+	$(CC) $(CFLAGS) -c $(SRCDIR)/signals.c -o $(SRCDIR)/signals.o
+
+$(SRCDIR)/logger.o: $(SRCDIR)/logger.c $(INCDIR)/logger.h
+	$(CC) $(CFLAGS) -c $(SRCDIR)/logger.c -o $(SRCDIR)/logger.o
+
+# Clean up
 clean:
-	rm -f *.o  myshell.log
+	rm -f $(SRCDIR)/*.o $(TARGET) myshell.log
+
+.PHONY: all clean
